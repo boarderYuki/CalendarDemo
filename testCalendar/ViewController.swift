@@ -68,12 +68,17 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.saveWidgetDidChange), name: userDefaults.object(forKey: "saveWidget") as? NSNotification.Name, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(saveWidgetDidChange), name: userDefaults.object(forKey: "naviTitle") as? NSNotification.Name, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(saveWidgetDidChange), name: UserDefaults.didChangeNotification, object: nil)
+        
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        NotificationCenter.default.removeObserver(self, name: userDefaults.object(forKey: "naviTitle") as? NSNotification.Name, object: nil)
+    override func viewDidDisappear(_ animated: Bool) {
+       
+        super.viewDidDisappear(true)
+        //NotificationCenter.default.removeObserver(self, name: userDefaults.object(forKey: "naviTitle") as? NSNotification.Name, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UserDefaults.didChangeNotification, object: nil)
+        
     }
     
     
@@ -132,21 +137,24 @@ class ViewController: UIViewController {
         
         if let dt = userDefaults.object(forKey: "naviTitle") {
             titleToDisplay = dt as! String
+            print("titleToDisplay 111111", titleToDisplay)
         } else {
             formatter.dateFormat = "MMMM yyyy"
             //formatter.timeZone = TimeZone.current
             
             titleToDisplay = "\(formatter.string(from: date))"
+            print("titleToDisplay 222222", titleToDisplay)
         }
         
        
         
         titleSize = (titleToDisplay as NSString).size(withAttributes: [NSAttributedStringKey.font:configuration.navigationBarTitleFont])
    
-        let titleCenter = view.frame.width - (CGFloat(titleSize.width)) / 2
-        print(titleSize, titleCenter)
+        //let titleCenter = view.frame.width - (CGFloat(titleSize.width)) / 2
+        //print(titleSize, titleCenter)
         // Set frame
         let frame = CGRect(x: 0, y: 0, width: titleSize.width + (configuration.arrowPadding + configuration.arrowImage.size.width), height: navigationController!.navigationBar.frame.height)
+        self.navigationItem.titleView?.frame = frame
         //let frame = CGRect(x: titleCenter, y: 0, width: titleSize.width, height: navigationController!.navigationBar.frame.height)
         
         //super.init(frame:frame)
@@ -182,6 +190,7 @@ class ViewController: UIViewController {
     
     
     @objc func clickOnTitleButton() {
+        
         rotateArrow()
         //dropDownViewHeight.constant = 50
         print("fdsafdsa")
@@ -258,8 +267,8 @@ class ViewController: UIViewController {
             menuTitle.frame = CGRect(x: 0, y: 0, width: titleSize.width, height: navigationController!.navigationBar.frame.height)
             menuTitle.text = titleToDisplay
             menuArrow.frame = CGRect(x: titleSize.width + configuration.arrowPadding, y: (navigationController!.navigationBar.frame.height - 18) / 2, width: 18, height: 18)
-            //self.navigationItem.titleView?.layoutIfNeeded()
-            //print("유저디폴트 변함")
+            self.navigationItem.titleView?.layoutIfNeeded()
+            print("유저디폴트 변함")
         }
     }
     

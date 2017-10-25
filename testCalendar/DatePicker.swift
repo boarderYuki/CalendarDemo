@@ -62,10 +62,6 @@ extension DatePicker: UIPickerViewDataSource {
 
 extension DatePicker: UIPickerViewDelegate {
     
-    
-    
-    
-    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedMonth = pickerMonth[row]
         selectedYear = pickerYear[row]
@@ -76,6 +72,7 @@ extension DatePicker: UIPickerViewDelegate {
         dateFormatter.dateFormat = "MMMM yyyy"
         let final = dateFormatter.string(from: date2)
         userDefaults.set(final, forKey: "naviTitle")
+        
         userDefaults.synchronize()
         print("피커선택", selectedMonth, selectedYear, selectedDate, date2, final)
     }
