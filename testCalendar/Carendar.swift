@@ -12,6 +12,7 @@ import FSCalendar
 class Carendar: FSCalendar, FSCalendarDataSource, FSCalendarDelegate {
 
     //let gregorian = Calendar(identifier: .gregorian)
+    var userDefaults = UserDefaults.standard
     
     fileprivate lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -44,6 +45,25 @@ class Carendar: FSCalendar, FSCalendarDataSource, FSCalendarDelegate {
     // 스와이프를 통해서 다른 달(month)의 달력으로 넘어갈 때 발생하는 이벤트를 이 곳에서 처리할 수 있겠네요.
     func calendarCurrentMonthDidChange(_ calendar: FSCalendar) {
         print(calendar)
+    }
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        print("did select date \(self.dateFormatter.string(from: date))")
+        let selectedDates = calendar.selectedDates.map({self.dateFormatter.string(from: $0)})
+        print("selected dates is \(selectedDates)")
+        if monthPosition == .next || monthPosition == .previous {
+            
+            calendar.setCurrentPage(date, animated: true)
+        }
+    }
+    
+    func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        print("달력스와이프")
+        dateFormatter.dateFormat = "MMMM yyyy"
+        let navi = self.dateFormatter.string(from: calendar.currentPage)
+        userDefaults.set(navi, forKey: "naviTitle")
+        print("\(self.dateFormatter.string(from: calendar.currentPage))")
     }
     
     //    func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {

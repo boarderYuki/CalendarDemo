@@ -22,14 +22,6 @@ class ViewController: UIViewController {
     let formatter = DateFormatter()
     
     var userDefaults = UserDefaults.standard
-//    fileprivate let gregorian = Calendar(identifier: .gregorian)
-//
-//    fileprivate lazy var dateFormatter: DateFormatter = {
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "yyyy/MM/dd"
-//        //formatter.timeZone = TimeZone.current
-//        return formatter
-//    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -192,7 +184,6 @@ class ViewController: UIViewController {
     @objc func clickOnTitleButton() {
         
         rotateArrow()
-        //dropDownViewHeight.constant = 50
         print("fdsafdsa")
     }
     
@@ -215,62 +206,37 @@ class ViewController: UIViewController {
         if let d = userDefaults.object(forKey: "naviTitle") {
             titleToDisplay = d as! String
             
-            
-            
-            
-            
-            
-            
-//            titleSize = (titleToDisplay as NSString).size(withAttributes: [NSAttributedStringKey.font:configuration.navigationBarTitleFont])
-//
-//            //let titleCenter = view.frame.width - (CGFloat(titleSize.width)) / 2
-//            //print(titleSize, titleCenter)
-//            // Set frame
-//            let frame = CGRect(x: 0, y: 0, width: titleSize.width + (configuration.arrowPadding + configuration.arrowImage.size.width), height: navigationController!.navigationBar.frame.height)
-//            menuButton = UIButton(frame: frame)
-//            //menuButton.addTarget(self, action: #selector(self.clickOnTitleButton), for: UIControlEvents.touchUpInside)
-//
-//
-//            menuTitle = UILabel()
-//            menuTitle.frame = CGRect(x: 0, y: 0, width: titleSize.width, height: navigationController!.navigationBar.frame.height)
-//            menuTitle.text = titleToDisplay
-//            //menuTitle.textColor = configuration.menuTitleColor
-//            //menuTitle.font = configuration.navigationBarTitleFont
-//            //menuTitle.textAlignment = configuration.cellTextLabelAlignment
-//            menuButton.addSubview(menuTitle)
-//
-//            //menuArrow = UIImageView(image: configuration.arrowImage)
-//            menuArrow.frame = CGRect(x: titleSize.width + configuration.arrowPadding, y: (navigationController!.navigationBar.frame.height - 18) / 2, width: 18, height: 18)
-//            //menuArrow.tintColor = configuration.arrowTintColor
-//            //menuButton.addSubview(menuArrow)
-//
-//
-//            //self.navigationItem.titleView = menuButton
-            
-            
-            
-            
-            
-            
             titleSize = (titleToDisplay as NSString).size(withAttributes: [NSAttributedStringKey.font:configuration.navigationBarTitleFont])
-            //let h = self.navigationItem.titleView?.frame.width
-//print(h)
-            
-            //let titleCenter = (103 - CGFloat(titleSize.width)) / 2
-            //print(titleSize, titleCenter)
-            // Set frame
+
             let frame = CGRect(x: 0, y: 0, width: titleSize.width + (configuration.arrowPadding + configuration.arrowImage.size.width), height: navigationController!.navigationBar.frame.height)
             self.navigationItem.titleView?.frame = frame
-            //print("***************",frame)
+
+            
             menuButton = UIButton(frame: frame)
             
             menuTitle.frame = CGRect(x: 0, y: 0, width: titleSize.width, height: navigationController!.navigationBar.frame.height)
             menuTitle.text = titleToDisplay
             menuArrow.frame = CGRect(x: titleSize.width + configuration.arrowPadding, y: (navigationController!.navigationBar.frame.height - 18) / 2, width: 18, height: 18)
-            self.navigationItem.titleView?.layoutIfNeeded()
+            
+            
+            //self.navigationItem.titleView?.layoutIfNeeded()
+            //calendar.setCurrentPage(d as! Date, animated: false)
             print("유저디폴트 변함")
+        }
+        
+        if let nd = userDefaults.object(forKey: "naviDate") {
+            //formatter.dateFormat = "yyyyMMddhhmmss"
+            //let date = formatter.date(from: nd as! String)
+            
+            //let date:NSDate = nd as! NSDate
+            print("nd", date)
+            calendar.setCurrentPage(nd as! Date, animated: false)
         }
     }
     
+    @IBAction func goTodayButton(_ sender: Any) {
+        calendar.setCurrentPage(Date(), animated: false)
+        print("goToday")
+    }
 }
 
