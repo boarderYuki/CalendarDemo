@@ -225,7 +225,7 @@ class ViewController: UIViewController {
             menuArrow.frame = CGRect(x: titleSize.width + configuration.arrowPadding, y: (navigationController!.navigationBar.frame.height - 18) / 2, width: 18, height: 18)
             
             
-            //self.navigationItem.titleView?.layoutIfNeeded()
+            self.navigationItem.titleView?.layoutIfNeeded()
             //calendar.setCurrentPage(d as! Date, animated: false)
             print("유저디폴트 변함")
         }
