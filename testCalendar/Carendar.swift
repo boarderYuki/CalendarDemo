@@ -63,6 +63,12 @@ class Carendar: FSCalendar, FSCalendarDataSource, FSCalendarDelegate {
         dateFormatter.dateFormat = "MMMM yyyy"
         let navi = self.dateFormatter.string(from: calendar.currentPage)
         userDefaults.set(navi, forKey: "naviTitle")
+        
+        let naviDate = self.dateFormatter.string(from: calendar.currentPage)
+        dateFormatter.dateFormat = "yyyyMMddhhmmss"
+        let date = dateFormatter.date(from: naviDate)
+        //selectedDate = dateFormatter.date(from: selectedDate)
+        userDefaults.set(date, forKey: "naviDate")
         print("\(self.dateFormatter.string(from: calendar.currentPage))")
     }
     

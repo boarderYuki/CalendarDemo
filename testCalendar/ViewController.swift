@@ -194,9 +194,15 @@ class ViewController: UIViewController {
                 selfie.menuArrow.transform = selfie.menuArrow.transform.rotated(by: 180 * CGFloat(Double.pi/180))
             }
             if self?.dropDownViewHeight.constant == 50 {
-                self?.dropDownViewHeight.constant = 0
+                UIView.animate(withDuration: 0.5) {
+                    self?.dropDownViewHeight.constant = 0
+                    self?.view.layoutIfNeeded()
+                }
             } else {
-                self?.dropDownViewHeight.constant = 50
+                UIView.animate(withDuration: 0.5) {
+                    self?.dropDownViewHeight.constant = 50
+                    self?.view.layoutIfNeeded()
+                }
             }
         })
     }
@@ -224,18 +230,21 @@ class ViewController: UIViewController {
             print("유저디폴트 변함")
         }
         
-        if let nd = userDefaults.object(forKey: "naviDate") {
-            //formatter.dateFormat = "yyyyMMddhhmmss"
-            //let date = formatter.date(from: nd as! String)
+        if let nd : Date = userDefaults.object(forKey: "naviDate") as? Date {
             
+            //formatter.dateFormat = "yyyyMMddhhmmss"
+            //let date = formatter.date(from: nd as Date)
+
             //let date:NSDate = nd as! NSDate
-            print("nd", date)
-            calendar.setCurrentPage(nd as! Date, animated: false)
+            print("nd", nd)
+            calendar.setCurrentPage(nd, animated: false)
         }
     }
     
     @IBAction func goTodayButton(_ sender: Any) {
+        //calendar.reloadData()
         calendar.setCurrentPage(Date(), animated: false)
+        
         print("goToday")
     }
 }

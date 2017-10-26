@@ -73,12 +73,15 @@ extension DatePicker: UIPickerViewDelegate {
         let date = dateFormatter.date(from: selectedDate)
         //selectedDate = dateFormatter.date(from: selectedDate)
         userDefaults.set(date, forKey: "naviDate")
+        print("피커뷰에서 naviDate ----", date)
+        
         
         let date2 = dateFormatter.date(from: selectedDate)!
         
         dateFormatter.dateFormat = "MMMM yyyy"
         let final = dateFormatter.string(from: date2)
         userDefaults.set(final, forKey: "naviTitle")
+        print("피커뷰에서 naviTitle ----", final)
         
         userDefaults.synchronize()
         print("피커선택", selectedMonth, selectedYear, selectedDate, date2, final)
