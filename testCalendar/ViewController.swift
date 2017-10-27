@@ -16,16 +16,25 @@ class ViewController: UIViewController {
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var selectedLabel: UILabel!
     
+    // 가로 피커뷰 관련
     var datePicker: DatePicker!
     var rotationAngle: CGFloat!
     let customHeight: CGFloat = 80
     let formatter = DateFormatter()
     
+    // 네비게이션 타이틀 관련
+    fileprivate var configuration = NaviConfig()
+    fileprivate var menuButton: UIButton!
+    fileprivate var menuTitle: UILabel!
+    fileprivate var menuArrow: UIImageView!
+    var titleToDisplay: String = ""
+    let date = Date()
+    var titleSize = CGSize()
+    
     var userDefaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //selectedLabel.text = "sdf"
         dropDownViewHeight.constant = 0
         
         datePicker = DatePicker()
@@ -48,17 +57,12 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        //NotificationCenter.default.addObserver(self, selector: #selector(saveWidgetDidChange), name: userDefaults.object(forKey: "naviTitle") as? NSNotification.Name, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(saveWidgetDidChange), name: UserDefaults.didChangeNotification, object: nil)
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-       
         super.viewDidDisappear(true)
-        //NotificationCenter.default.removeObserver(self, name: userDefaults.object(forKey: "naviTitle") as? NSNotification.Name, object: nil)
         NotificationCenter.default.removeObserver(self, name: UserDefaults.didChangeNotification, object: nil)
-        
     }
     
     
@@ -90,68 +94,29 @@ class ViewController: UIViewController {
 ////    func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
 ////        return shouldShowEventDot
 ////    }
-//    
-    func rotatePickerView() {
-        
-        rotationAngle = -90 * (.pi/180)
-        let y = pickerView.frame.origin.y
-        print(y)
-        pickerView.transform = CGAffineTransform(rotationAngle: rotationAngle)
-        
-        pickerView.frame = CGRect(x: -150, y: y, width: view.frame.width + 300, height: customHeight)
-        
-        pickerView.selectRow(2, inComponent: 0, animated: true)
-        
-    }
+//
     
-    fileprivate var configuration = NaviConfig()
-    fileprivate var menuButton: UIButton!
-    fileprivate var menuTitle: UILabel!
-    fileprivate var menuArrow: UIImageView!
-    var titleToDisplay: String = ""
-    let date = Date()
-    var titleSize = CGSize()
     
+    //MARK: - 네비게이션 타이틀 설정
     func titleButton() {
         //var titleSize: CGSize
         
         if let dt = userDefaults.object(forKey: "naviTitle") {
             titleToDisplay = dt as! String
-            print("titleToDisplay 111111", titleToDisplay)
         } else {
             formatter.dateFormat = "MMMM yyyy"
-            //formatter.timeZone = TimeZone.current
-            
             titleToDisplay = "\(formatter.string(from: date))"
             print("titleToDisplay 222222", titleToDisplay)
         }
         
-       
-        
         titleSize = (titleToDisplay as NSString).size(withAttributes: [NSAttributedStringKey.font:configuration.navigationBarTitleFont])
-   
-        //let titleCenter = view.frame.width - (CGFloat(titleSize.width)) / 2
-        //print(titleSize, titleCenter)
-        // Set frame
+        
         let frame = CGRect(x: 0, y: 0, width: titleSize.width + (configuration.arrowPadding + configuration.arrowImage.size.width), height: navigationController!.navigationBar.frame.height)
         self.navigationItem.titleView?.frame = frame
-        //let frame = CGRect(x: titleCenter, y: 0, width: titleSize.width, height: navigationController!.navigationBar.frame.height)
-        
-        //super.init(frame:frame)
-
-        //let titleButton =  UIButton(type: .custom)
-        //button.frame = CGRectMake(0, 0, 100, 40) as CGRect
-        //titleButton.frame = CGRect(x: 0, y: 0, width: 130, height: 40)
-
-        // Init button as navigation title
         menuButton = UIButton(frame: frame)
-        //menuButton.addTarget(self, action: #selector(BTNavigationDropdownMenu.menuButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         menuButton.addTarget(self, action: #selector(self.clickOnTitleButton), for: UIControlEvents.touchUpInside)
-        //self.addSubview(self.menuButton)
         
         menuTitle = UILabel()
-        //menuTitle.frame = CGRect(x: 0, y: 0, width: titleSize.width, height: navigationController!.navigationBar.frame.height)
-        //menuTitle = UILabel(frame: frame)
         menuTitle.frame = CGRect(x: 0, y: 0, width: titleSize.width, height: navigationController!.navigationBar.frame.height)
         menuTitle.text = titleToDisplay
         menuTitle.textColor = configuration.menuTitleColor
@@ -164,19 +129,11 @@ class ViewController: UIViewController {
         menuArrow.tintColor = configuration.arrowTintColor
         menuButton.addSubview(menuArrow)
         
-
         self.navigationItem.titleView = menuButton
         self.navigationItem.titleView?.layoutIfNeeded()
     }
     
-    
-    @objc func clickOnTitleButton() {
-        
-        rotateArrow()
-        print("fdsafdsa")
-    }
-    
- 
+    // 네비게이션 옆 화살표 로테이션
     func rotateArrow() {
         UIView.animate(withDuration: configuration.animationDuration, animations: {[weak self] () -> () in
             if let selfie = self {
@@ -196,6 +153,20 @@ class ViewController: UIViewController {
         })
     }
     
+    // 가로 피커뷰
+    func rotatePickerView() {
+        rotationAngle = -90 * (.pi/180)
+        let y = pickerView.frame.origin.y
+        pickerView.transform = CGAffineTransform(rotationAngle: rotationAngle)
+        pickerView.frame = CGRect(x: -150, y: y, width: view.frame.width + 300, height: customHeight)
+        pickerView.selectRow(2, inComponent: 0, animated: true)
+    }
+    
+    @objc func clickOnTitleButton() {
+        rotateArrow()
+    }
+    
+    // 네비게이션 타이틀 변화 체크
     @objc func saveWidgetDidChange() {
         
         if let d = userDefaults.object(forKey: "naviTitle") {
@@ -206,35 +177,85 @@ class ViewController: UIViewController {
             let frame = CGRect(x: 0, y: 0, width: titleSize.width + (configuration.arrowPadding + configuration.arrowImage.size.width), height: navigationController!.navigationBar.frame.height)
             self.navigationItem.titleView?.frame = frame
 
-            
             menuButton = UIButton(frame: frame)
             
             menuTitle.frame = CGRect(x: 0, y: 0, width: titleSize.width, height: navigationController!.navigationBar.frame.height)
             menuTitle.text = titleToDisplay
             menuArrow.frame = CGRect(x: titleSize.width + configuration.arrowPadding, y: (navigationController!.navigationBar.frame.height - 18) / 2, width: 18, height: 18)
             
-            
             self.navigationItem.titleView?.layoutIfNeeded()
-            //calendar.setCurrentPage(d as! Date, animated: false)
             print("유저디폴트 변함")
         }
         
         if let nd : Date = userDefaults.object(forKey: "naviDate") as? Date {
             
-            //formatter.dateFormat = "yyyyMMddhhmmss"
-            //let date = formatter.date(from: nd as Date)
-
-            //let date:NSDate = nd as! NSDate
             print("nd", nd)
             calendar.setCurrentPage(nd, animated: false)
         }
     }
     
     @IBAction func goTodayButton(_ sender: Any) {
-        //calendar.reloadData()
         calendar.setCurrentPage(Date(), animated: false)
-        
-        print("goToday")
     }
+    
+    
+    
+    //MARK: - 특정일 선택
+    // 특정 날짜를 선택했을 때, 발생하는 이벤트는 이 곳에서 처리할 수 있겠네요.
+    func calendar(_ calendar: FSCalendar, didSelect date: Date) {
+        print(date)
+        
+        print("did select date \(self.formatter.string(from: date))")
+        let selectedDates = calendar.selectedDates.map({self.formatter.string(from: $0)})
+        print("selected dates is \(selectedDates)")
+        
+        //let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        //let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! ViewController
+        //mainVC.selectedLabel.text = self.dateFormatter.string(from: date)
+        
+        //print(date)
+        formatter.dateFormat = "yyyy"
+        print(formatter.string(from: date))
+        formatter.dateFormat = "MM"
+        print(formatter.string(from: date))
+        formatter.dateFormat = "dd"
+        print(formatter.string(from: date))
+        
+        
+        
+    }
+    
+    
+    //MARK: - 달력 제스쳐
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        formatter.dateFormat = "yyyy/MM/dd"
+        print("did select date \(self.formatter.string(from: date))")
+        let selectedDates = calendar.selectedDates.map({self.formatter.string(from: $0)})
+        print("selected dates is \(selectedDates)")
+        if monthPosition == .next || monthPosition == .previous {
+            
+            calendar.setCurrentPage(date, animated: true)
+        }
+    }
+    
+    func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        print("달력스와이프")
+        formatter.dateFormat = "MMMM yyyy"
+        let navi = self.formatter.string(from: calendar.currentPage)
+        userDefaults.set(navi, forKey: "naviTitle")
+        
+        let naviDate = self.formatter.string(from: calendar.currentPage)
+        formatter.dateFormat = "yyyyMMddhhmmss"
+        let date = formatter.date(from: naviDate)
+        //selectedDate = dateFormatter.date(from: selectedDate)
+        userDefaults.set(date, forKey: "naviDate")
+        print("\(self.formatter.string(from: calendar.currentPage))")
+    }
+    
+    
+    
+    
+    
+    
 }
 
