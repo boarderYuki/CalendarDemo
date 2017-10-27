@@ -63,6 +63,7 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         tableView.panGestureRecognizer.require(toFail: self.scopeGesture)
         calendar.scope = .month
         
+        
     }
 
 
