@@ -9,12 +9,14 @@
 import UIKit
 import FSCalendar
 
-class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
+class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate{
 
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var dropDownViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var selectedLabel: UILabel!
+    @IBOutlet weak var tableView: UITableView!
     
     // 가로 피커뷰 관련
     var datePicker: DatePicker!
@@ -32,6 +34,16 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     var titleSize = CGSize()
     
     var userDefaults = UserDefaults.standard
+    
+    // 달력 제스쳐
+    fileprivate lazy var scopeGesture: UIPanGestureRecognizer = {
+        [unowned self] in
+        let panGesture = UIPanGestureRecognizer(target: self.calendar, action: #selector(self.calendar.handleScopeGesture(_:)))
+        panGesture.delegate = self
+        panGesture.minimumNumberOfTouches = 1
+        panGesture.maximumNumberOfTouches = 2
+        return panGesture
+        }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +65,9 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         calendar.delegate = self
         calendar.dataSource = self
 
+        self.view.addGestureRecognizer(self.scopeGesture)
+        self.tableView.panGestureRecognizer.require(toFail: self.scopeGesture)
+        self.calendar.scope = .month
         
     }
 
@@ -68,36 +83,9 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     }
     
     
-//    // 각 날짜에 특정 문자열을 표시할 수 있습니다. 이미지를 표시하는 메소드도 있으니 API를 참조하세요.
-////    func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
-////        return "W"
-////    }
-//    
-//    // 특정 날짜를 선택했을 때, 발생하는 이벤트는 이 곳에서 처리할 수 있겠네요.
-//    func calendar(_ calendar: FSCalendar, didSelect date: Date) {
-//        print(date)
-//        print("did select date \(self.dateFormatter.string(from: date))")
-//        let selectedDates = calendar.selectedDates.map({self.dateFormatter.string(from: $0)})
-//        print("selected dates is \(selectedDates)")
-//        //print(date)
-//        dateFormatter.dateFormat = "yyyy"
-//        print(dateFormatter.string(from: date))
-//        dateFormatter.dateFormat = "MM"
-//        print(dateFormatter.string(from: date))
-//        dateFormatter.dateFormat = "dd"
-//        print(dateFormatter.string(from: date))
-//    }
-//    
-//    // 스와이프를 통해서 다른 달(month)의 달력으로 넘어갈 때 발생하는 이벤트를 이 곳에서 처리할 수 있겠네요.
-//    func calendarCurrentMonthDidChange(_ calendar: FSCalendar) {
-//        print(calendar)
-//    }
-//    
-////    func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
-////        return shouldShowEventDot
-////    }
-//
-    
+    @IBAction func goTodayButton(_ sender: Any) {
+        calendar.setCurrentPage(Date(), animated: false)
+    }
     
     //MARK: - 네비게이션 타이틀 설정
     func titleButton() {
@@ -196,9 +184,7 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         }
     }
     
-    @IBAction func goTodayButton(_ sender: Any) {
-        calendar.setCurrentPage(Date(), animated: false)
-    }
+    
     
     
     
@@ -229,6 +215,26 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     
     
     //MARK: - 달력 제스쳐
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let shouldBegin = self.tableView.contentOffset.y <= -self.tableView.contentInset.top
+        if shouldBegin {
+            let velocity = self.scopeGesture.velocity(in: self.view)
+            switch self.calendar.scope {
+            case .month:
+                return velocity.y < 0
+            case .week:
+                return velocity.y > 0
+            }
+        }
+        return shouldBegin
+    }
+    
+    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+        self.calendarHeightConstraint.constant = bounds.height
+        print("bounds.height", bounds.height)
+        self.view.layoutIfNeeded()
+    }
+    
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         formatter.dateFormat = "yyyy/MM/dd"
         print("did select date \(self.formatter.string(from: date))")
@@ -257,7 +263,54 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     
     
     
+    // MARK:- UITableViewDataSource
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return [2,5][section]
+    }
+    
+    let sections: [String] = ["11", "22", "33"]
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section]
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = UIColor.orange
+        
+        return view
+    }
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            let identifier = ["cell_month", "cell_week"][indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier)!
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+            return cell
+        }
+    }
+    
+    
+    // MARK:- UITableViewDelegate
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        tableView.deselectRow(at: indexPath, animated: true)
+//        if indexPath.section == 0 {
+//            let scope: FSCalendarScope = (indexPath.row == 0) ? .month : .week
+//            self.calendar.setScope(scope, animated: self.animationSwitch.isOn)
+//        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
+    }
     
 }
 

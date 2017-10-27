@@ -187,8 +187,10 @@
                     </navigationItem>
                     <connections>
                         <outlet property="calendar" destination="Trp-VS-IcH" id="ano-ne-HtK"/>
+                        <outlet property="calendarHeightConstraint" destination="UAs-6w-Wen" id="wcf-Ct-b5Q"/>
                         <outlet property="dropDownViewHeight" destination="rU1-cy-jUM" id="c96-C2-pDD"/>
                         <outlet property="pickerView" destination="Qen-Vm-XRI" id="rnw-cu-p9e"/>
+                        <outlet property="tableView" destination="13I-uz-k15" id="t1V-Pc-3j6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
