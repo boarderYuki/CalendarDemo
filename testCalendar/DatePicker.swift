@@ -11,7 +11,6 @@ import UIKit
 class DatePicker: UIPickerView {
     var selectedMonth: String = ""
     var selectedYear: String = ""
-    //var rotationAngle: CGFloat!
     let customWidth: CGFloat = 60
     let customHeight: CGFloat = 80
     
@@ -20,31 +19,6 @@ class DatePicker: UIPickerView {
     
     let dateFormatter = DateFormatter()
     var userDefaults = UserDefaults.standard
-    
-//    fileprivate var configuration = NaviConfig()
-//    fileprivate var menuArrow: UIImageView!
-//    var dropDownViewHeight: NSLayoutConstraint!
-    
-    
-//    func rotateArrow() {
-//        let gf = ViewController().dropDownViewHeight.constant
-//        print(gf)
-//        menuArrow = UIImageView(image: configuration.arrowImage)
-//        //menuArrow.frame = CGRect(x: ViewController().titleSize.width + configuration.arrowPadding, y: (ViewController().navigationController!.navigationBar.frame.height - 18) / 2, width: 18, height: 18)
-//        //menuArrow.tintColor = configuration.arrowTintColor
-//
-//        UIView.animate(withDuration: configuration.animationDuration, animations: {[weak self] () -> () in
-//            if let selfie = self {
-//                selfie.menuArrow.transform = selfie.menuArrow.transform.rotated(by: 180 * CGFloat(Double.pi/180))
-//            }
-//            if self?.dropDownViewHeight.constant == 50 {
-//                self?.dropDownViewHeight.constant = 0
-//            } else {
-//                self?.dropDownViewHeight.constant = 50
-//            }
-//        })
-//    }
-    
     
 }
 

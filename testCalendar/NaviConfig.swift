@@ -60,7 +60,7 @@ final class NaviConfig {
         self.selectedCellTextLabelColor = UIColor.darkGray
         self.cellTextLabelFont = UIFont(name: "Verdana", size: 17)
         self.navigationBarTitleFont = UIFont(name: "Verdana", size: 15)
-        self.cellTextLabelAlignment = NSTextAlignment.left
+        self.cellTextLabelAlignment = NSTextAlignment.center
         self.cellSelectionColor = UIColor.lightGray
         //self.checkMarkImage = UIImage(contentsOfFile: checkMarkImagePath!)
         self.shouldKeepSelectedCellColor = false

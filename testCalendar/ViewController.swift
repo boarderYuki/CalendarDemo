@@ -56,7 +56,7 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         calendar.delegate = self
         calendar.dataSource = self
         
-        navigationtTitleSet()
+        //navigationtTitleSet()
         rotatePickerView()
 
         view.addGestureRecognizer(self.scopeGesture)
@@ -69,6 +69,8 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+        navigationtTitleSet()
         NotificationCenter.default.addObserver(self, selector: #selector(saveWidgetDidChange), name: UserDefaults.didChangeNotification, object: nil)
     }
     
@@ -87,32 +89,36 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     func navigationtTitleSet() {
         
         if let dt = userDefaults.object(forKey: "naviTitle") {
+            print("여기 들어오나")
             titleToDisplay = dt as! String
+            
         } else {
             formatter.dateFormat = "MMMM yyyy"
             titleToDisplay = "\(formatter.string(from: date))"
         }
         
         titleSize = (titleToDisplay as NSString).size(withAttributes: [NSAttributedStringKey.font:configuration.navigationBarTitleFont])
-        
-        let frame = CGRect(x: 0, y: 0, width: titleSize.width + (configuration.arrowPadding + configuration.arrowImage.size.width), height: navigationController!.navigationBar.frame.height)
-        self.navigationItem.titleView?.frame = frame
+
+        let frame = CGRect(x: 0, y: 0, width: titleSize.width + configuration.arrowPadding + configuration.arrowImage.size.width, height: navigationController!.navigationBar.frame.height)
+
         menuButton = UIButton(frame: frame)
+
         menuButton.addTarget(self, action: #selector(self.clickOnTitleButton), for: UIControlEvents.touchUpInside)
-        
+
         menuTitle = UILabel()
         menuTitle.frame = CGRect(x: 0, y: 0, width: titleSize.width, height: navigationController!.navigationBar.frame.height)
         menuTitle.text = titleToDisplay
         menuTitle.textColor = configuration.menuTitleColor
         menuTitle.font = configuration.navigationBarTitleFont
+        menuTitle.adjustsFontSizeToFitWidth = true
         menuTitle.textAlignment = configuration.cellTextLabelAlignment
         menuButton.addSubview(menuTitle)
-        
+
         menuArrow = UIImageView(image: configuration.arrowImage)
         menuArrow.frame = CGRect(x: titleSize.width + configuration.arrowPadding, y: (navigationController!.navigationBar.frame.height - 18) / 2, width: 18, height: 18)
         menuArrow.tintColor = configuration.arrowTintColor
         menuButton.addSubview(menuArrow)
-        
+
         // 메뉴버튼(네비게이션 타이틀) = 메뉴타이틀 + 메뉴에로우
         self.navigationItem.titleView = menuButton
         self.navigationItem.titleView?.layoutIfNeeded()
@@ -155,20 +161,27 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     @objc func saveWidgetDidChange() {
         
         if let d = userDefaults.object(forKey: "naviTitle") {
-            titleToDisplay = d as! String
             
+            titleToDisplay = d as! String
+
             titleSize = (titleToDisplay as NSString).size(withAttributes: [NSAttributedStringKey.font:configuration.navigationBarTitleFont])
 
             let frame = CGRect(x: 0, y: 0, width: titleSize.width + (configuration.arrowPadding + configuration.arrowImage.size.width), height: navigationController!.navigationBar.frame.height)
-            self.navigationItem.titleView?.frame = frame
 
             menuButton = UIButton(frame: frame)
-            
+
             menuTitle.frame = CGRect(x: 0, y: 0, width: titleSize.width, height: navigationController!.navigationBar.frame.height)
+
             menuTitle.text = titleToDisplay
-            menuArrow.frame = CGRect(x: titleSize.width + configuration.arrowPadding, y: (navigationController!.navigationBar.frame.height - 18) / 2, width: 18, height: 18)
+            menuTitle.adjustsFontSizeToFitWidth = true
+            menuButton.addSubview(menuTitle)
             
+            menuArrow.frame = CGRect(x: titleSize.width + configuration.arrowPadding, y: (navigationController!.navigationBar.frame.height - 18) / 2, width: 18, height: 18)
+            menuButton.addSubview(menuArrow)
+            
+            self.navigationItem.titleView = menuButton
             self.navigationItem.titleView?.layoutIfNeeded()
+            
         }
         
         if let nd : Date = userDefaults.object(forKey: "naviDate") as? Date {
