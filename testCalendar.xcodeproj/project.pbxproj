@@ -17,7 +17,6 @@
 		B6DB186C1FA0357600BACFB3 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB186B1FA0357600BACFB3 /* UIColor+Hex.swift */; };
 		B6DB186E1FA0360000BACFB3 /* UIColor+FlatColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB186D1FA0360000BACFB3 /* UIColor+FlatColors.swift */; };
 		B6DB18701FA060DC00BACFB3 /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB186F1FA060DC00BACFB3 /* DatePicker.swift */; };
-		B6DB18721FA073FC00BACFB3 /* Carendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB18711FA073FC00BACFB3 /* Carendar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +34,6 @@
 		B6DB186B1FA0357600BACFB3 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		B6DB186D1FA0360000BACFB3 /* UIColor+FlatColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+FlatColors.swift"; sourceTree = "<group>"; };
 		B6DB186F1FA060DC00BACFB3 /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
-		B6DB18711FA073FC00BACFB3 /* Carendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Carendar.swift; sourceTree = "<group>"; };
 		CD5FCA74F1D43D4EECD1B0F0 /* Pods-testCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testCalendar.release.xcconfig"; path = "Pods/Target Support Files/Pods-testCalendar/Pods-testCalendar.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,7 +81,6 @@
 				B6DB184D1F9E042D00BACFB3 /* AppDelegate.swift */,
 				B6DB184F1F9E042D00BACFB3 /* ViewController.swift */,
 				B6DB186F1FA060DC00BACFB3 /* DatePicker.swift */,
-				B6DB18711FA073FC00BACFB3 /* Carendar.swift */,
 				B6DB18691F9F8A8C00BACFB3 /* NaviConfig.swift */,
 				B6DB186B1FA0357600BACFB3 /* UIColor+Hex.swift */,
 				B6DB186D1FA0360000BACFB3 /* UIColor+FlatColors.swift */,
@@ -229,7 +226,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6DB18721FA073FC00BACFB3 /* Carendar.swift in Sources */,
 				B6DB186A1F9F8A8C00BACFB3 /* NaviConfig.swift in Sources */,
 				B6DB186E1FA0360000BACFB3 /* UIColor+FlatColors.swift in Sources */,
 				B6DB186C1FA0357600BACFB3 /* UIColor+Hex.swift in Sources */,

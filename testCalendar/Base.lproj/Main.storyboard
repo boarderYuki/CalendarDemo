@@ -15,7 +15,7 @@
         </array>
     </customFonts>
     <scenes>
-        <!--View Controller-->
+        <!--Data Source-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="mainVC" id="BYZ-38-t0r" customClass="ViewController" customModule="testCalendar" customModuleProvider="target" sceneMemberID="viewController">
@@ -41,7 +41,7 @@
                                     <constraint firstAttribute="height" constant="50" id="rU1-cy-jUM"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Trp-VS-IcH" customClass="Carendar" customModule="testCalendar" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Trp-VS-IcH" customClass="FSCalendar">
                                 <rect key="frame" x="0.0" y="50" width="320" height="300"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Qcr-gd-sUy">
@@ -129,6 +129,10 @@
                                         <color key="value" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="ZLL-RX-ZiD"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="eHS-7j-00F"/>
+                                </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5s4-g7-vYA">
                                 <rect key="frame" x="260" y="305" width="50" height="30"/>

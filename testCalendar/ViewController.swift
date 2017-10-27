@@ -9,7 +9,7 @@
 import UIKit
 import FSCalendar
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
 
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var dropDownViewHeight: NSLayoutConstraint!
@@ -48,8 +48,10 @@ class ViewController: UIViewController {
         //calendar.cellShape = .Rectangle //선택된 날짜의 형태가 네모
         //calendar.allowsMultipleSelection = true //여러날짜를 동시에 선택
         calendar.clipsToBounds = true //달력 구분 선 제거
-        calendar.delegate = calendar as? FSCalendarDelegate
-        calendar.dataSource = calendar as? FSCalendarDataSource
+        //calendar.delegate = calendar as? FSCalendarDelegate
+        //calendar.dataSource = calendar as? FSCalendarDataSource
+        calendar.delegate = self
+        calendar.dataSource = self
 
         
     }
