@@ -190,28 +190,26 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     
     //MARK: - 특정일 선택
     // 특정 날짜를 선택했을 때, 발생하는 이벤트는 이 곳에서 처리할 수 있겠네요.
-    func calendar(_ calendar: FSCalendar, didSelect date: Date) {
-        print(date)
-        
-        print("did select date \(self.formatter.string(from: date))")
-        let selectedDates = calendar.selectedDates.map({self.formatter.string(from: $0)})
-        print("selected dates is \(selectedDates)")
-        
-        //let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        //let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! ViewController
-        //mainVC.selectedLabel.text = self.dateFormatter.string(from: date)
-        
-        //print(date)
-        formatter.dateFormat = "yyyy"
-        print(formatter.string(from: date))
-        formatter.dateFormat = "MM"
-        print(formatter.string(from: date))
-        formatter.dateFormat = "dd"
-        print(formatter.string(from: date))
-        
-        
-        
-    }
+//    func calendar(_ calendar: FSCalendar, didSelect date: Date) {
+//        print(date)
+//
+//        print("did select date \(self.formatter.string(from: date))")
+//        let selectedDates = calendar.selectedDates.map({self.formatter.string(from: $0)})
+//        print("selected dates is \(selectedDates)")
+//
+//        //let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        //let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! ViewController
+//        //mainVC.selectedLabel.text = self.dateFormatter.string(from: date)
+//
+//        //print(date)
+//        formatter.dateFormat = "yyyy"
+//        print(formatter.string(from: date))
+//        formatter.dateFormat = "MM"
+//        print(formatter.string(from: date))
+//        formatter.dateFormat = "dd"
+//        print(formatter.string(from: date))
+//
+//    }
     
     
     //MARK: - 달력 제스쳐
@@ -235,17 +233,6 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         self.view.layoutIfNeeded()
     }
     
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        formatter.dateFormat = "yyyy/MM/dd"
-        print("did select date \(self.formatter.string(from: date))")
-        let selectedDates = calendar.selectedDates.map({self.formatter.string(from: $0)})
-        print("selected dates is \(selectedDates)")
-        if monthPosition == .next || monthPosition == .previous {
-            
-            calendar.setCurrentPage(date, animated: true)
-        }
-    }
-    
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         print("달력스와이프")
         formatter.dateFormat = "MMMM yyyy"
@@ -260,7 +247,17 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         print("\(self.formatter.string(from: calendar.currentPage))")
     }
     
-    
+    // 특정일 선택
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        formatter.dateFormat = "yyyy/MM/dd"
+        print("did select date \(self.formatter.string(from: date))")
+        let selectedDates = calendar.selectedDates.map({self.formatter.string(from: $0)})
+        print("selected dates is \(selectedDates)")
+        if monthPosition == .next || monthPosition == .previous {
+            
+            calendar.setCurrentPage(date, animated: true)
+        }
+    }
     
     
     // MARK:- UITableViewDataSource
