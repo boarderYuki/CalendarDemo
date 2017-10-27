@@ -53,21 +53,15 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         pickerView.delegate = datePicker
         pickerView.dataSource = datePicker
         
-        
-        titleButton()
-        rotatePickerView()
-
-        //calendar.cellShape = .Rectangle //선택된 날짜의 형태가 네모
-        //calendar.allowsMultipleSelection = true //여러날짜를 동시에 선택
-        calendar.clipsToBounds = true //달력 구분 선 제거
-        //calendar.delegate = calendar as? FSCalendarDelegate
-        //calendar.dataSource = calendar as? FSCalendarDataSource
         calendar.delegate = self
         calendar.dataSource = self
+        
+        navigationtTitleSet()
+        rotatePickerView()
 
-        self.view.addGestureRecognizer(self.scopeGesture)
-        self.tableView.panGestureRecognizer.require(toFail: self.scopeGesture)
-        self.calendar.scope = .month
+        view.addGestureRecognizer(self.scopeGesture)
+        tableView.panGestureRecognizer.require(toFail: self.scopeGesture)
+        calendar.scope = .month
         
     }
 
@@ -87,16 +81,15 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         calendar.setCurrentPage(Date(), animated: false)
     }
     
+    
     //MARK: - 네비게이션 타이틀 설정
-    func titleButton() {
-        //var titleSize: CGSize
+    func navigationtTitleSet() {
         
         if let dt = userDefaults.object(forKey: "naviTitle") {
             titleToDisplay = dt as! String
         } else {
             formatter.dateFormat = "MMMM yyyy"
             titleToDisplay = "\(formatter.string(from: date))"
-            print("titleToDisplay 222222", titleToDisplay)
         }
         
         titleSize = (titleToDisplay as NSString).size(withAttributes: [NSAttributedStringKey.font:configuration.navigationBarTitleFont])
@@ -119,6 +112,7 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         menuArrow.tintColor = configuration.arrowTintColor
         menuButton.addSubview(menuArrow)
         
+        // 메뉴버튼(네비게이션 타이틀) = 메뉴타이틀 + 메뉴에로우
         self.navigationItem.titleView = menuButton
         self.navigationItem.titleView?.layoutIfNeeded()
     }
@@ -174,22 +168,12 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
             menuArrow.frame = CGRect(x: titleSize.width + configuration.arrowPadding, y: (navigationController!.navigationBar.frame.height - 18) / 2, width: 18, height: 18)
             
             self.navigationItem.titleView?.layoutIfNeeded()
-            print("유저디폴트 변함")
         }
         
         if let nd : Date = userDefaults.object(forKey: "naviDate") as? Date {
-            
-            print("nd", nd)
             calendar.setCurrentPage(nd, animated: false)
         }
     }
-    
-    
-    
-    
-    
-
-
     
     
     //MARK: - 달력 제스쳐
@@ -209,12 +193,10 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         self.calendarHeightConstraint.constant = bounds.height
-        print("bounds.height", bounds.height)
         self.view.layoutIfNeeded()
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-        print("달력스와이프")
         formatter.dateFormat = "MMMM yyyy"
         let navi = self.formatter.string(from: calendar.currentPage)
         userDefaults.set(navi, forKey: "naviTitle")
@@ -222,9 +204,9 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         let naviDate = self.formatter.string(from: calendar.currentPage)
         formatter.dateFormat = "yyyyMMddhhmmss"
         let date = formatter.date(from: naviDate)
-        //selectedDate = dateFormatter.date(from: selectedDate)
         userDefaults.set(date, forKey: "naviDate")
-        print("\(self.formatter.string(from: calendar.currentPage))")
+        
+        userDefaults.synchronize()
     }
     
     //MARK: - 특정일 선택
@@ -234,7 +216,6 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         let selectedDates = calendar.selectedDates.map({self.formatter.string(from: $0)})
         print("selected dates is \(selectedDates)")
         if monthPosition == .next || monthPosition == .previous {
-            
             calendar.setCurrentPage(date, animated: true)
         }
     }
