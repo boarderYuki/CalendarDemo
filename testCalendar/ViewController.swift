@@ -11,10 +11,10 @@ import FSCalendar
 
 class ViewController: UIViewController {
 
-    //@IBOutlet weak var titleButton: UIButton!
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var dropDownViewHeight: NSLayoutConstraint!
     @IBOutlet weak var pickerView: UIPickerView!
+    @IBOutlet weak var selectedLabel: UILabel!
     
     var datePicker: DatePicker!
     var rotationAngle: CGFloat!
@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //selectedLabel.text = "sdf"
         dropDownViewHeight.constant = 0
         
         datePicker = DatePicker()
@@ -36,24 +36,12 @@ class ViewController: UIViewController {
         titleButton()
         rotatePickerView()
 
-        //calendar.cellShape = .Rectangle //선택된 날짜의 형태가 네모로 표시되도록
-        //calendar.allowsMultipleSelection = true //여러날짜를 동시에 선택할 수 있도록
-        //calendar.clipsToBounds = true //달력 구분 선 제거
-        //calendar = Carendar()
+        //calendar.cellShape = .Rectangle //선택된 날짜의 형태가 네모
+        //calendar.allowsMultipleSelection = true //여러날짜를 동시에 선택
+        calendar.clipsToBounds = true //달력 구분 선 제거
         calendar.delegate = calendar as? FSCalendarDelegate
         calendar.dataSource = calendar as? FSCalendarDataSource
-        
-        //calendar.scope = .week
-        //calendar.appearance.headerDateFormat = "MMM yyyy"
-        calendar.appearance.eventDefaultColor = UIColor.black
-        calendar.appearance.weekdayTextColor = UIColor.black
-        calendar.appearance.titleWeekendColor = UIColor.FlatColor.Red.WellRead
-        calendar.appearance.headerTitleColor = UIColor.green
-        //calendar.placeholderType = .none
-        //let a = formatter.date(from: "2016-01-01")
-        //let a = DateFormatter.dateFromString(from: "2016-01-01")
-        //print(a)
-        //calendar.selectedDate(.a)
+
         
     }
 
@@ -178,6 +166,7 @@ class ViewController: UIViewController {
         
 
         self.navigationItem.titleView = menuButton
+        self.navigationItem.titleView?.layoutIfNeeded()
     }
     
     

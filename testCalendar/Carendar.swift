@@ -33,6 +33,11 @@ class Carendar: FSCalendar, FSCalendarDataSource, FSCalendarDelegate {
         print("did select date \(self.dateFormatter.string(from: date))")
         let selectedDates = calendar.selectedDates.map({self.dateFormatter.string(from: $0)})
         print("selected dates is \(selectedDates)")
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! ViewController
+        mainVC.selectedLabel.text = self.dateFormatter.string(from: date)
+        
         //print(date)
         dateFormatter.dateFormat = "yyyy"
         print(dateFormatter.string(from: date))
@@ -40,6 +45,9 @@ class Carendar: FSCalendar, FSCalendarDataSource, FSCalendarDelegate {
         print(dateFormatter.string(from: date))
         dateFormatter.dateFormat = "dd"
         print(dateFormatter.string(from: date))
+        
+
+        
     }
     
     // 스와이프를 통해서 다른 달(month)의 달력으로 넘어갈 때 발생하는 이벤트를 이 곳에서 처리할 수 있겠네요.

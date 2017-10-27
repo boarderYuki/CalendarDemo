@@ -47,8 +47,8 @@ final class NaviConfig {
         //let arrowImagePath = Bundle.main.url(forResource: "arrow_down_icon", withExtension: "png")
         
         // Default values
-        self.menuTitleColor = UIColor.FlatColor.Green.PersianGreen
-        self.arrowTintColor = UIColor.FlatColor.Green.MountainMeadow
+        self.menuTitleColor = UIColor.FlatColor.Gray.WhiteSmoke
+        self.arrowTintColor = UIColor.FlatColor.Gray.WhiteSmoke
         self.animationDuration = 0.5
         
         
@@ -58,7 +58,7 @@ final class NaviConfig {
         self.cellSeparatorColor = UIColor.darkGray
         self.cellTextLabelColor = UIColor.darkGray
         self.selectedCellTextLabelColor = UIColor.darkGray
-        self.cellTextLabelFont = UIFont(name: "HelveticaNeue-Bold", size: 17)
+        self.cellTextLabelFont = UIFont(name: "Verdana", size: 17)
         self.navigationBarTitleFont = UIFont(name: "Verdana", size: 15)
         self.cellTextLabelAlignment = NSTextAlignment.left
         self.cellSelectionColor = UIColor.lightGray
