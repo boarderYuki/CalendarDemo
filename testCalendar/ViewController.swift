@@ -89,7 +89,6 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     func navigationtTitleSet() {
         
         if let dt = userDefaults.object(forKey: "naviTitle") {
-            print("여기 들어오나")
             titleToDisplay = dt as! String
             
         } else {
@@ -169,6 +168,7 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
             let frame = CGRect(x: 0, y: 0, width: titleSize.width + (configuration.arrowPadding + configuration.arrowImage.size.width), height: navigationController!.navigationBar.frame.height)
 
             menuButton = UIButton(frame: frame)
+            menuButton.addTarget(self, action: #selector(self.clickOnTitleButton), for: UIControlEvents.touchUpInside)
 
             menuTitle.frame = CGRect(x: 0, y: 0, width: titleSize.width, height: navigationController!.navigationBar.frame.height)
 
